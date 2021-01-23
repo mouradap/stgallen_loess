@@ -6,8 +6,8 @@ from methods.plots import Plots
 data_proc = DataProcessor()
 
 class DataModel(ABC):
-    def preprocess(self, data):
-        self.data = data_proc.process_data(data)
+    def preprocess(self, data, **dates):
+        self.data = data_proc.process_data(data, **dates)
         self.plots = Plots(self.data)
 
     @abstractmethod
