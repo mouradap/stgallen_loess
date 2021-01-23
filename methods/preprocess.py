@@ -54,13 +54,14 @@ class DataProcessor():
             self.df = self.df[self.df['date'] >= dates['start_date']]
         if 'end_date' in dates:
             self.df = self.df[self.df['date'] <= dates['end_date']]
+        self.df['date'] = self.df['date'] - pd.to_timedelta(7, unit = 'd')
         self.df.fillna(0, inplace=True)
         symp_idx = ['2', '3', '4', '12', '14', '15']
 
         for symp in symp_idx:
             self.df[symp] = self.df[symp].astype(int)
 
-        self.grouped_df = self.df.groupby(['userId', pd.Grouper(key='date', freq='W-MON')])[symp_idx].first().reset_index().sort_values('date')
+        self.grouped_df = self.df.groupby(['userId', pd.Grouper(key='date', freq='W-SUN')])[symp_idx].first().reset_index().sort_values('date')
 
         cols = self.grouped_df.columns.to_list()
         cols = self.__replace_symptom(cols)
